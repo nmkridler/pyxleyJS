@@ -1,11 +1,9 @@
 import React from 'react';
-import {SelectButton} from './SelectButton';
-import {ConditionalSelectButton} from './ConditionalSelectButton';
-import {ApiButton} from './ApiButton';
 import {DownloadButton} from './DownloadButton';
-import {SliderInput} from './SliderInput';
-import {DynamicSearchInput} from './DynamicSearchInput';
-import {CheckboxGroup} from './CheckboxGroup';
+import {InputDecimal, InputText} from './SimpleInput';
+import {AntSelect, AntMultiSelect} from './AntSelect';
+import {AntDatePicker, AntMonthRangePicker, AntDateSelect} from './AntDatePicker'
+import {AntCheck} from './AntCheckbox'
 
 var FilterFactory = function(type) {
     if (typeof FilterFactory[type] != 'function'){
@@ -15,30 +13,59 @@ var FilterFactory = function(type) {
     return FilterFactory[type];
 };
 
-FilterFactory.SliderInput = SliderInput;
-FilterFactory.SelectButton = SelectButton;
-FilterFactory.ConditionalSelectButton = ConditionalSelectButton;
-FilterFactory.ApiButton = ApiButton;
+FilterFactory.SelectButton = AntSelect;
 FilterFactory.DownloadButton = DownloadButton;
-FilterFactory.DynamicSearch = DynamicSearchInput;
-FilterFactory.CheckboxGroup = CheckboxGroup;
+FilterFactory.InputText = InputText;
+FilterFactory.MultiSelect = AntMultiSelect;
+FilterFactory.AntDatePicker = AntDatePicker;
+FilterFactory.AntDateSelect = AntDateSelect;
+FilterFactory.AntMonthRangePicker = AntMonthRangePicker;
+FilterFactory.SimpleInput = InputDecimal;
+FilterFactory.AntCheck = AntCheck;
 
-export class Filter extends React.Component {
+class Filter extends React.Component {
     constructor(props) {
         super(props);
     }
 
     render() {
-        var Z = FilterFactory(this.props.type);
+        var Z = this.props.filter_factory(this.props.type);
+
         return (
             <Z
-                ref={"filter"}
                 id={this.props.id}
-                dynamic={this.props.dynamic}
                 onChange={this.props.onChange}
+                value={this.props.value}
+                items={this.props.items}
                 options={this.props.options} />
         );
     }
 }
 
-export {FilterFactory};
+Filter.defaultProps = {
+    filter_factory: FilterFactory
+};
+
+
+function mapFilterStateToProps(state, ownProps) {
+
+    let output = {value: null, items: []}
+    let id = ownProps.options.alias
+    if( id in state.filters){
+        if ("value" in state.filters[id]) {
+            output.value = state.filters[id].value
+        }
+    }
+
+    if( id in state.filter_data ){
+
+        if ("data" in state.filter_data[id]) {
+            output.options = ownProps.options
+            output.items = state.filter_data[id].data
+        }
+    }
+
+    return output
+}
+
+export {Filter, FilterFactory, mapFilterStateToProps}

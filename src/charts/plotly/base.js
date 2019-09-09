@@ -1,36 +1,30 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+
+import createPlotlyComponent from 'react-plotly.js/factory'
+const Plot = createPlotlyComponent(Plotly);
 
 export class PlotlyAPI extends React.Component {
-    constructor(props) {
-        super(props);
-    }
 
-    _update(params) {
-        var url = this.props.options.url.concat("?",
-            $.param(params));
-        $.get(url,
-            function(result) {
-                Plotly.newPlot(
-                    this.props.options.chartid,
-                    result.data,
-                    result.layout,
-                    result.config
-                )
-            }.bind(this)
-        );
-    }
-
-    componentDidMount() {
-        this._update(this.props.options.params);
+    getPlotProps() {
+        let props = {}
+        if( "data" in this.props.data) {
+            props.data = this.props.data.data || [],
+            props.config = this.props.data.config || {},
+            props.layout = this.props.data.layout || {},
+            props.divId = this.props.id
+            return props
+        }
+        return null
 
     }
 
     render() {
+        let plotProps = this.getPlotProps()
+        if( plotProps === null ){
+            return <div/>
+        }
         return (
-            <div>
-            <div id={this.props.options.chartid}></div>
-            </div>
+            <Plot {...plotProps}/>
         );
     }
 }
