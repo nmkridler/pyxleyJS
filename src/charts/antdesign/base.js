@@ -1,5 +1,4 @@
-import 'antd/dist/antd.css';
-import {Table, Icon} from 'antd'
+import { Table } from 'antd'
 import React from 'react'
 
 const {Column, ColumnGroup} = Table;

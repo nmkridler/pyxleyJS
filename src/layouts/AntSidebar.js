@@ -1,7 +1,6 @@
-import {Layout, Menu} from 'antd';
+import { Menu} from 'antd';
 import React from 'react';
 const { SubMenu } = Menu;
-import {Filter} from '../filters/factory';
 
 
 class AntSidebar extends React.Component {

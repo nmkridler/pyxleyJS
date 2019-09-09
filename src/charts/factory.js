@@ -1,8 +1,4 @@
 import React from 'react';
-// import {MetricsGraphics} from './metricsgraphics/base.js';
-// import {NVD3Chart} from './nvd3/base.js';
-// import {Table} from './datatables/base.js';
-// import {Datamaps} from './datamaps/base.js';
 import {PlotlyAPI} from './plotly/base.js';
 import {AntTable} from './antdesign/base.js';
 import {connect} from 'react-redux';
@@ -17,11 +13,6 @@ var ChartFactory = function(type) {
     return ChartFactory[type];
 };
 
-
-// ChartFactory.MetricsGraphics = MetricsGraphics;
-// ChartFactory.Table = Table;
-// ChartFactory.NVD3Chart = NVD3Chart;
-// ChartFactory.Datamaps = Datamaps;
 ChartFactory.PlotlyAPI = PlotlyAPI;
 ChartFactory.AntTable = AntTable;
 
@@ -66,6 +57,5 @@ function mapChartStateToProps(state, ownProps) {
 }
 
 
-Chart = connect(mapChartStateToProps)(Chart);
-export {Chart};
-export {ChartFactory};
+export {Chart, ChartFactory, mapChartStateToProps};
+

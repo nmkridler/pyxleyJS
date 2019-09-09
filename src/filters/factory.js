@@ -1,5 +1,4 @@
 import React from 'react';
-import {connect} from 'react-redux';
 import {DownloadButton} from './DownloadButton';
 import {InputDecimal, InputText} from './SimpleInput';
 import {AntSelect, AntMultiSelect} from './AntSelect';
@@ -15,10 +14,8 @@ var FilterFactory = function(type) {
 };
 
 FilterFactory.SelectButton = AntSelect;
-
 FilterFactory.DownloadButton = DownloadButton;
 FilterFactory.InputText = InputText;
-FilterFactory.ReactSelect = AntMultiSelect;
 FilterFactory.MultiSelect = AntMultiSelect;
 FilterFactory.AntDatePicker = AntDatePicker;
 FilterFactory.AntDateSelect = AntDateSelect;
@@ -70,5 +67,5 @@ function mapFilterStateToProps(state, ownProps) {
 
     return output
 }
-Filter = connect(mapFilterStateToProps)(Filter);
+
 export {Filter, FilterFactory, mapFilterStateToProps}
