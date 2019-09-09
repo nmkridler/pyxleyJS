@@ -10,11 +10,6 @@ var LayoutFactory = function(type) {
 };
 
 class Layout extends React.Component {
-    static get defaultProps() {
-        return {
-            layout_factory: LayoutFactory
-        };
-    }
 
     constructor(props) {
         super(props);
