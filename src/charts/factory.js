@@ -1,7 +1,6 @@
 import React from 'react';
 import {PlotlyAPI} from './plotly/base.js';
 import {AntTable} from './antdesign/base.js';
-import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 
 var ChartFactory = function(type) {
@@ -38,24 +37,4 @@ Chart.defaultProps = {
 
 };
 
-
-function mapChartStateToProps(state, ownProps) {
-
-    let newvalue = {result: []}
-    let id = ownProps.id
-
-    if( id in state.charts){
-
-        if ("data" in state.charts[id]) {
-            newvalue = state.charts[id].data
-        }
-    }
-
-    return {
-        data: newvalue
-    };
-}
-
-
-export {Chart, ChartFactory, mapChartStateToProps};
-
+export {Chart, ChartFactory};

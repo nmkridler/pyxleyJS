@@ -29,7 +29,7 @@ class Filter extends React.Component {
     }
 
     render() {
-        var Z = this.props.filter_factory(this.props.type);
+        var Z = this.props.factory(this.props.type);
 
         return (
             <Z
@@ -43,29 +43,7 @@ class Filter extends React.Component {
 }
 
 Filter.defaultProps = {
-    filter_factory: FilterFactory
+    factory: FilterFactory
 };
 
-
-function mapFilterStateToProps(state, ownProps) {
-
-    let output = {value: null, items: []}
-    let id = ownProps.options.alias
-    if( id in state.filters){
-        if ("value" in state.filters[id]) {
-            output.value = state.filters[id].value
-        }
-    }
-
-    if( id in state.filter_data ){
-
-        if ("data" in state.filter_data[id]) {
-            output.options = ownProps.options
-            output.items = state.filter_data[id].data
-        }
-    }
-
-    return output
-}
-
-export {Filter, FilterFactory, mapFilterStateToProps}
+export {Filter, FilterFactory}

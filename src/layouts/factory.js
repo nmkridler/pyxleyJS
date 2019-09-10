@@ -1,4 +1,3 @@
-
 import React from 'react';
 
 var LayoutFactory = function(type) {
@@ -16,7 +15,7 @@ class Layout extends React.Component {
     }
 
     render() {
-        var Z = this.props.layout_factory(this.props.type);
+        var Z = this.props.factory(this.props.type);
         return (
             <Z
                 id={this.props.id}
@@ -27,7 +26,8 @@ class Layout extends React.Component {
 }
 
 Layout.defaultProps = {
-    layout_factory: LayoutFactory
+    factory: LayoutFactory
 };
+
 
 export {Layout, LayoutFactory};

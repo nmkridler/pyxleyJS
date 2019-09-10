@@ -4,7 +4,6 @@ export {LayoutFactory, Layout} from './layouts/factory.js';
 export {AntHeader} from './layouts/AntLayout.js';
 export {AntSidebar} from './layouts/AntSidebar.js';
 export {Filter} from './filters/factory.js';
-export {mapFilterStateToProps} from './filters/factory.js';
 export {reducers} from './reducers/index';
 export {actions} from './actions/index';
 export {Chart} from './charts/factory.js';

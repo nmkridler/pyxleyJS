@@ -10,18 +10,4 @@ const layouts = (state = {}, action) => {
     }
 }
 
-const navBar = (state = {}, action) => {
-    switch (action.type) {
-        case 'RECEIVE_NAV_BAR':
-            return {
-                ...state,
-                navlinks: action.navlinks,
-                brand: action.brand
-            }
-        default:
-            return state
-    }
-}
-
-
-export {layouts, navBar}
+export {layouts}

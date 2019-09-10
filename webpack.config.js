@@ -17,20 +17,22 @@ module.exports = {
             use:  [{
                 loader: 'babel-loader',
                 options: {
-                    presets: ['@babel/env', '@babel/react']
+                    presets: ['@babel/env', '@babel/react'],
+                    plugins: [
+                      ['import', {
+                        libraryName: "antd",
+                        libraryDirectory: "es",
+                        style: true}]
+                  ]
                }
             }],
         },
         {
             test: /\.less$/,
-
             use: [
               {loader: 'style-loader'},
               {loader: 'css-loader'},
-              {
-                loader: 'less-loader',
-                options: { javascriptEnabled: true }
-              },
+              {loader: 'less-loader'},
             ]
         }
 
@@ -56,8 +58,13 @@ module.exports = {
     },
     {antd: "antd"},
     {"react-redux": "react-redux"},
-    {redux: "redux"}
+    {redux: "redux"},
+    {moment: "moment"}
+  ],
+  optimization: {
+    minimize: true
+  },
+  plugins: [
+    new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /ru/)
   ]
-
-
 };

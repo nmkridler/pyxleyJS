@@ -111,12 +111,134 @@ function updateStateAndHash(input, dispatch) {
 
 }
 
+const _gatherSelectedFilters = (input, ownProps) => {
+    // input is a list of objects
+    // ownProps should have a selected_filters attribute
+    let params = {...ownProps.selected_filters}
+    if( input === undefined) {
+        return params;
+    }
+    input.forEach( item => {
+        params[item.alias] = item.value;
+    })
+    return params;
+}
+
+
+const _onClick = (dispatch, input, ownProps) => {
+
+    let params = _gatherSelectedFilters(input, ownProps);
+
+    updateFilterState(input, dispatch);
+
+    let { path, charts, filters, chart_prefix } = ownProps;
+    if( charts !== undefined ) {
+        getChartData(path, params, dispatch, charts, chart_prefix);
+    };
+    getFilterData(path, params, dispatch, filters);
+
+}
+
+
+const mapLayoutDispatchToProps = (dispatch, ownProps) => {
+    return {
+        onClick: (input) => {
+            _onClick(dispatch, input, ownProps)}
+    };
+}
+
+const mapFilterStateToProps = (state, ownProps) => {
+
+    let output = {value: null, items: []};
+    let id = ownProps.options.alias;
+    if( id in state.filters){
+        if ("value" in state.filters[id]) {
+            output.value = state.filters[id].value;
+        };
+    };
+
+    if( id in state.filter_data ){
+
+        if ("data" in state.filter_data[id]) {
+            output.options = ownProps.options;
+            output.items = state.filter_data[id].data;
+        };
+    };
+
+    return output;
+}
+
+const mapChartStateToProps = (state, ownProps) => {
+
+    let newvalue = {result: []};
+    let id = ownProps.id;
+
+    if( id in state.charts){
+
+        if ("data" in state.charts[id]) {
+            newvalue = state.charts[id].data;
+        };
+    };
+
+    return {
+        data: newvalue
+    };
+}
+
+const mapLayoutStateToProps = (state, ownProps) => {
+
+    // get selected filter data
+    let selected_filters = {};
+    let filter_data = {};
+    for(let filterId in state.filters) {
+        let _filter_data = state.filters[filterId] || {};
+        if("value" in _filter_data) {
+            selected_filters[filterId] = state.filters[filterId].value;
+            filter_data[filterId] = {
+                value: state.filters[filterId].value
+            };
+        };
+    }
+    // get chart data
+    let chart_data = {};
+    for(let chartId in state.charts) {
+        chart_data[chartId] = state.charts[chartId].data
+    };
+
+    // get filter data
+    let { filters } = ownProps;
+    filters['pyxley-filter'].forEach( (fprop, index) => {
+        let filterId = ownProps.filter_prefix.concat(index);
+        let _filter_data = state.filter_data[filterId] || {};
+        if("data" in _filter_data) {
+            filter_data[filterId] = {
+                ...state.filter_data[filterId],
+                options: fprop.options,
+                items: state.filter_data[filterId].data
+            };
+        };
+    });
+
+    return {
+        selected_filters: selected_filters,
+        data: chart_data,
+        filter_data: filter_data
+    };
+};
+
+
+
+
 const utils = {
     getChartData: getChartData,
     getFilterData: getFilterData,
     removeFilters: removeFilters,
     updateFilterState: updateFilterState,
-    updateStateAndHash: updateStateAndHash
+    updateStateAndHash: updateStateAndHash,
+    mapFilterStateToProps: mapFilterStateToProps,
+    mapChartStateToProps: mapChartStateToProps,
+    mapLayoutStateToProps: mapLayoutStateToProps,
+    mapLayoutDispatchToProps: mapLayoutDispatchToProps
 }
 
 export {utils}
